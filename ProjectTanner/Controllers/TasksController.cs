@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectTanner.Utils;
 
 namespace ProjectTanner.Controllers
 {
@@ -7,10 +8,17 @@ namespace ProjectTanner.Controllers
     {
 
         private readonly ILogger<TasksController> _logger;
+        private readonly Context.AppContext _appContext;
 
-        public TasksController(ILogger<TasksController> logger)
+
+
+        //crud
+        //add routes
+
+        public TasksController(ILogger<TasksController> logger, Context.AppContext appContext)
         {
             _logger = logger;
+            _appContext = appContext;
         }
 
         // GET: TasksController
@@ -18,18 +26,38 @@ namespace ProjectTanner.Controllers
         {
             return View();
         }
+        //??
+
 
         // GET: TasksController/Details/5
         public ActionResult Details(int id)
         {
+            Models.Task? task = null;
+            try
+            {
+                task = TaskUtils.GetTaskById(_appContext, id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
+            
             return View();
         }
 
         // GET: TasksController/Create
+        //post
+        //gets json object
+        //returns 201
+        //400
+        //
         public ActionResult Create()
         {
             return View();
         }
+
+
 
         // POST: TasksController/Create
         [HttpPost]
@@ -46,6 +74,7 @@ namespace ProjectTanner.Controllers
             }
         }
 
+        //post -> send json object 
         // GET: TasksController/Edit/5
         public ActionResult Edit(int id)
         {
@@ -67,6 +96,7 @@ namespace ProjectTanner.Controllers
             }
         }
 
+        //delete 
         // GET: TasksController/Delete/5
         public ActionResult Delete(int id)
         {

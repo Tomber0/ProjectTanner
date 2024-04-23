@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using ProjectTanner.Context;
+
 namespace ProjectTanner
 {
     public class Program
@@ -8,7 +11,7 @@ namespace ProjectTanner
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDbContext<Context.AppContext>(options => options.UseMySql("server=.;user=root;password=123456789;database=usersdb;", new MySqlServerVersion(new Version(8, 0, 25))));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

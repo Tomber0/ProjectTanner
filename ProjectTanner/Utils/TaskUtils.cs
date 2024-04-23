@@ -8,18 +8,28 @@ namespace ProjectTanner.Utils
 {
     public class TaskUtils
     {
-        // TODO : void -> bool
-        public static async void CreateTask(Context.AppContext context, TaskCreateModel model) 
+        public static string UniqueId 
+        {
+            get 
+            {
+                return Guid.NewGuid().ToString();
+            } 
+        }
+
+        public static Models.Task CreateTask(Context.AppContext context, TaskCreateModel model) 
         {
             var user = context.Users.Include(u=>u.Tasks).FirstOrDefault(u=>u.Id == model.UserId);
-            var entity = context.Tasks.Add(new Models.Task() 
+            var task = new Models.Task()
             {
+                UnId = UniqueId,
                 Name = model.Name,
                 Description = model.Description,
                 IsRepeated = model.IsRepeated,
                 User = user
-            });
-            await context.SaveChangesAsync();
+            };
+            context.Tasks.Add(task);
+            context.SaveChanges();
+            return task;
         }
         
         public static async void DeleteTaskById(Context.AppContext context,int id) 
@@ -57,20 +67,22 @@ namespace ProjectTanner.Utils
                     Streak = model.Streak,
                 });
             }
-
             await context.SaveChangesAsync();
-
-
         }
-        //TODO END
 
         public static List<Models.Task> GetAllTasksByUserTName(Context.AppContext context,string tName) 
         {
             return context.Users.Include(u => u.Tasks).FirstOrDefault(u => u.TId == tName)?.Tasks ?? new List<Models.Task>();
         }
+
         public static Models.Task? GetTaskById(Context.AppContext context, int taskId) 
         {
             return context.Tasks.FirstOrDefault(t => t.Id == taskId);
+        }
+
+        public static Models.Task? GetTaskByUniqueId(Context.AppContext context, string taskId) 
+        {
+            return context.Tasks.FirstOrDefault(t => t.UnId ==  taskId);
         }
     }
 }

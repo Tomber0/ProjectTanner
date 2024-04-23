@@ -16,8 +16,7 @@ namespace ProjectTanner.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseMySql("server=.;user=root;password=123456789;database=usersdb;",
-                new MySqlServerVersion(new Version(8, 0, 25)));
+            //optionsBuilder.UseMySql("server=.;user=root;password=123456789;database=usersdb;", new MySqlServerVersion(new Version(8, 0, 25)));
         }
     }
 }
