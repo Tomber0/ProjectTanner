@@ -3,13 +3,10 @@
     public class Task
     {
         public int Id { get; set; }
-        public string UnId { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public int Status { get; set; }
         public DateTime ExpDate { get; set; }
-        public bool IsComplete { get; set; }
-        public bool IsRepeated {  get; set; }
         public int Streak {  get; set; }
         public User? User { get; set; }
     }

@@ -4,6 +4,7 @@ using ProjectTanner.Utils;
 
 namespace ProjectTanner.Controllers
 {
+    [Route("api")]
     public class TasksController : Controller
     {
 
@@ -27,6 +28,43 @@ namespace ProjectTanner.Controllers
             return View();
         }
         //??
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         // GET: TasksController/Details/5

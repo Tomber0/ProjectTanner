@@ -21,10 +21,8 @@ namespace ProjectTanner.Utils
             var user = context.Users.Include(u=>u.Tasks).FirstOrDefault(u=>u.Id == model.UserId);
             var task = new Models.Task()
             {
-                UnId = UniqueId,
                 Name = model.Name,
                 Description = model.Description,
-                IsRepeated = model.IsRepeated,
                 User = user
             };
             context.Tasks.Add(task);
@@ -32,12 +30,46 @@ namespace ProjectTanner.Utils
             return task;
         }
         
+        public static async void ChangeStreak(Context.AppContext context, int id, int newStreak)
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
+            task.Streak = newStreak;
+            await context.SaveChangesAsync();
+
+        }
+
+
         public static async void DeleteTaskById(Context.AppContext context,int id) 
         {
             var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
             context.Tasks.Remove(task);
             await context.SaveChangesAsync();
         }
+
+        public static async void UpdateName(Context.AppContext context, int id, string newName) 
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
+            task.Name = newName;
+            await context.SaveChangesAsync();
+
+        }
+
+        public static async void UpdateDescription(Context.AppContext context, int id, string newDescription) 
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
+            task.Description = newDescription;
+            await context.SaveChangesAsync();
+        }
+
+        public static async void UpdateStatus(Context.AppContext context, int id, int status) 
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
+            task.Status = status;
+            await context.SaveChangesAsync();
+        }
+
+
+
         public static async void UpdateTask(Context.AppContext context, Models.Task model)
         {
             var user = context.Users.Include(u => u.Tasks).FirstOrDefault(u => u.Id == model.User.Id);
@@ -46,10 +78,8 @@ namespace ProjectTanner.Utils
             {
                 entity.Name = model.Name;
                 entity.Description = model.Description;
-                entity.IsRepeated = model.IsRepeated;
                 entity.User = model.User;
                 entity.ExpDate = model.ExpDate;
-                entity.IsComplete = model.IsComplete;
                 entity.Status = model.Status;
                 entity.Streak = model.Streak;
             }
@@ -59,10 +89,8 @@ namespace ProjectTanner.Utils
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    IsRepeated = model.IsRepeated,
                     User = model.User,
                     ExpDate = model.ExpDate,
-                    IsComplete = model.IsComplete,
                     Status = model.Status,
                     Streak = model.Streak,
                 });
@@ -80,9 +108,5 @@ namespace ProjectTanner.Utils
             return context.Tasks.FirstOrDefault(t => t.Id == taskId);
         }
 
-        public static Models.Task? GetTaskByUniqueId(Context.AppContext context, string taskId) 
-        {
-            return context.Tasks.FirstOrDefault(t => t.UnId ==  taskId);
-        }
     }
 }
