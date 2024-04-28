@@ -23,8 +23,14 @@ namespace ProjectTanner.Utils
             {
                 Name = model.Name,
                 Description = model.Description,
-                User = user
+                User = user,
+                Streak = -1,
+                ExpDate = model.ExpDate,
             };
+            if (model.IsRepeated) 
+            {
+                task.Streak = 0;
+            }
             context.Tasks.Add(task);
             context.SaveChanges();
             return task;
@@ -35,9 +41,7 @@ namespace ProjectTanner.Utils
             var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
             task.Streak = newStreak;
             await context.SaveChangesAsync();
-
         }
-
 
         public static async void DeleteTaskById(Context.AppContext context,int id) 
         {
@@ -51,7 +55,6 @@ namespace ProjectTanner.Utils
             var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
             task.Name = newName;
             await context.SaveChangesAsync();
-
         }
 
         public static async void UpdateDescription(Context.AppContext context, int id, string newDescription) 
@@ -68,7 +71,12 @@ namespace ProjectTanner.Utils
             await context.SaveChangesAsync();
         }
 
-
+        public static async void UpdateTime(Context.AppContext context, int id, DateTime newTime) 
+        {
+            var task = await context.Tasks.SingleOrDefaultAsync(t => t.Id == id);
+            task.ExpDate = newTime;
+            await context.SaveChangesAsync();
+        }
 
         public static async void UpdateTask(Context.AppContext context, Models.Task model)
         {
